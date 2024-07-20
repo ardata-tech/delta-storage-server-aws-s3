@@ -1,0 +1,15 @@
+{
+  "imports": {
+    "@/": "./",
+    "@libs/xml": "jsr:@libs/xml@^5.4.12",
+    "@std/dotenv": "jsr:@std/dotenv@^0.225.0",
+    "hono": "jsr:@hono/hono@^4.5.0"
+  },
+  "tasks": {
+    "start": "deno run --watch --allow-net --allow-env --allow-read main.ts"
+  },
+  "compilerOptions": {
+    "jsx": "precompile",
+    "jsxImportSource": "hono/jsx"
+  }
+}
