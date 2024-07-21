@@ -41,4 +41,35 @@ bucket.put("/:bucketName", async (c) => {
   }
 });
 
+bucket.delete("/:bucketName", async (c) => {
+  try {
+    const { bucketName } = c.req.param();
+
+    const apiKey = c.res.headers.get("Authorization");
+
+    await api.delete(`/drives/${bucketName}`, {
+      headers: { Authorization: `Bearer ${apiKey}` },
+    });
+
+    const root = {
+      "x-amz-id-2": "",
+      "x-amz-request-id": "",
+      Date: `${new Date()}`,
+      Connection: "close",
+      Server: "Delta Storage Server",
+    };
+
+    const xmlResponse = xml.stringify({
+      "@version": "1.0",
+      root,
+    });
+
+    c.header("Content-Type", "text/xml");
+
+    return c.body(xmlResponse);
+  } catch (e) {
+    return c.body(e);
+  }
+});
+
 export default bucket;
