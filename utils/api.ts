@@ -5,10 +5,10 @@ class Api {
     this.baseUrl = baseUrl;
   }
 
-  private async request<T>(
+  private async request<T = any>(
     endpoint: string,
     options: RequestInit,
-  ): Promise<T> {
+  ) {
     const optionsData: RequestInit = {
       ...options,
       body: options.body ? JSON.stringify(options.body) : undefined,
@@ -30,7 +30,7 @@ class Api {
   public async get<T>(
     endpoint: string,
     options?: Omit<RequestInit, "method"> | undefined,
-  ): Promise<T> {
+  ) {
     return await this.request<T>(endpoint, { ...options, method: "GET" });
   }
 
@@ -38,7 +38,7 @@ class Api {
     endpoint: string,
     body: any,
     options?: Omit<RequestInit, "method" | "body"> | undefined,
-  ): Promise<T> {
+  ) {
     return await this.request(endpoint, {
       ...options,
       method: "POST",
@@ -50,14 +50,14 @@ class Api {
     endpoint: string,
     body: any,
     options?: Omit<RequestInit, "method" | "body"> | undefined,
-  ): Promise<T> {
+  ) {
     return await this.request(endpoint, { ...options, method: "PUT", body });
   }
 
   public async delete<T>(
     endpoint: string,
     options?: Omit<RequestInit, "method"> | undefined,
-  ): Promise<T> {
+  ) {
     return await this.request(endpoint, { ...options, method: "DELETE" });
   }
 }
