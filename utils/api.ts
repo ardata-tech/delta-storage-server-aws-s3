@@ -11,9 +11,13 @@ class Api {
   ) {
     const optionsData: RequestInit = {
       ...options,
-      body: options.body ? JSON.stringify(options.body) : undefined,
+      body: options.body instanceof FormData
+        ? options.body
+        : JSON.stringify(options.body),
       headers: {
-        "Content-Type": "application/json",
+        ...(options.body instanceof FormData
+          ? {}
+          : { "Content-Type": "application/json" }),
         ...options.headers,
       },
     };

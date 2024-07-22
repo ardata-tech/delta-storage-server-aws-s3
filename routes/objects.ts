@@ -7,6 +7,7 @@ const api = new Api(DELTA_SERVER_URL);
 
 const objects = new Hono();
 
+// GET FILES
 objects.get("/:keyName", async (c) => {
   const { keyName } = c.req.param();
 
@@ -54,6 +55,45 @@ objects.get("/:keyName", async (c) => {
   c.header("Content-Type", "text/xml");
 
   return c.body(xmlResponse);
+});
+
+// UPLOAD FILE
+objects.put("/:bucketName/*", async (c) => {
+  try {
+    const apiKey = c.res.headers.get("Authorization");
+
+    const { bucketName } = c.req.param();
+    const keyName = c.req.path.split("/").slice(1);
+    const blob = await c.req.blob();
+
+    const file = new File([blob], keyName.at(-1) ?? "", { type: blob.type });
+
+    console.log(keyName);
+
+    const formData = new FormData();
+    formData.append("file", file, file.name);
+    formData.append("directoryId", keyName.at(-2) ?? bucketName);
+
+    // console.log({ formData });
+    const res = await api.post(`/files/upload`, formData, {
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+      },
+    });
+
+    const root = {};
+
+    const xmlResponse = xml.stringify({
+      "@version": "1.0",
+      root,
+    });
+
+    c.header("Content-Type", "text/xml");
+
+    return c.body(xmlResponse);
+  } catch (error) {
+    return c.body(error);
+  }
 });
 
 export default objects;
