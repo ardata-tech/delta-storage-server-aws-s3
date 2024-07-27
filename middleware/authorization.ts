@@ -8,8 +8,8 @@ export const authorization = async (
   next: Next,
 ) => {
   const apiKey = getApiKeyFromAuthorizationHeader(
-    c.req.header("Authorization") ?? "",
+    c.req.header("Authorization"),
   );
-  c.res.headers.set("Authorization", apiKey);
+  c.res.headers.set("Authorization", apiKey ?? "");
   await next();
 };

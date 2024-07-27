@@ -12,6 +12,15 @@ const app = new Hono();
 
 app.use(logger());
 app.use(prettyJSON());
+
+app.get(
+  "/",
+  (c) =>
+    c.html(
+      `Delta S3 Gateway is up and running. Visit <a href="https://docs.delta.storage">https://docs.delta.storage</a> for more info`,
+    ),
+);
+
 app.get(
   "/health-checker",
   (c) => c.json({ date: new Date(), DELTA_SERVER_URL }),
