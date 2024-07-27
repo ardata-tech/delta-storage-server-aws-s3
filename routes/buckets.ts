@@ -14,9 +14,13 @@ bucket.put("/:bucketName", async (c) => {
 
     const apiKey = c.res.headers.get("Authorization");
 
-    await api.post("/drives/create", { name: bucketName }, {
-      headers: { Authorization: `Bearer ${apiKey}` },
-    });
+    await api.post(
+      "/drives/create",
+      { name: bucketName },
+      {
+        headers: { Authorization: `Bearer ${apiKey}` },
+      },
+    );
 
     const root = {
       "x-amz-id-2": "",

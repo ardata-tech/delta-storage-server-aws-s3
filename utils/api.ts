@@ -5,15 +5,13 @@ class Api {
     this.baseUrl = baseUrl;
   }
 
-  private async request<T = any>(
-    endpoint: string,
-    options: RequestInit,
-  ) {
+  private async request<T = any>(endpoint: string, options: RequestInit) {
     const optionsData: RequestInit = {
       ...options,
-      body: options.body instanceof FormData
-        ? options.body
-        : JSON.stringify(options.body),
+      body:
+        options.body instanceof FormData
+          ? options.body
+          : JSON.stringify(options.body),
       headers: {
         ...(options.body instanceof FormData
           ? {}
@@ -23,6 +21,8 @@ class Api {
     };
 
     const response = await fetch(`${this.baseUrl}${endpoint}`, optionsData);
+
+    console.log({ response, optionsData });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
