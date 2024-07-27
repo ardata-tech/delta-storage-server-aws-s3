@@ -8,10 +8,9 @@ class Api {
   private async request<T = any>(endpoint: string, options: RequestInit) {
     const optionsData: RequestInit = {
       ...options,
-      body:
-        options.body instanceof FormData
-          ? options.body
-          : JSON.stringify(options.body),
+      body: options.body instanceof FormData
+        ? options.body
+        : JSON.stringify(options.body),
       headers: {
         ...(options.body instanceof FormData
           ? {}
@@ -25,7 +24,8 @@ class Api {
     console.log({ response, optionsData });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const error = await response.json();
+      throw new Error(JSON.stringify(error));
     }
 
     return response.json();

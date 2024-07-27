@@ -6,11 +6,16 @@ import { authorization } from "@/middleware/authorization.ts";
 
 import BucketsRoute from "@/routes/buckets.ts";
 import ObjectsRoute from "@/routes/objects.ts";
+import { DELTA_SERVER_URL } from "@/utils/constants.ts";
 
 const app = new Hono();
 
 app.use(logger());
 app.use(prettyJSON());
+app.get(
+  "/health-checker",
+  (c) => c.json({ date: new Date(), DELTA_SERVER_URL }),
+);
 
 app.use(authorization);
 

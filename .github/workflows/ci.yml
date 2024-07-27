@@ -1,0 +1,41 @@
+name: Build and Deploy Server
+on:
+  push:
+    branches:
+      - main
+      
+jobs: 
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install SSH client
+        run: sudo apt-get install -y openssh-client
+
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{secrets.DROPLET_SSH_HOST}}
+          username: ${{secrets.DROPLET_SSH_USER}}
+          key: ${{secrets.DROPLET_SSH_PRIVATE_KEY}}
+          source: "./*"
+          target: "./prod-delta-storage/delta-storage-aws-s3"
+
+      - name: SSH into Droplet and run container
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.DROPLET_SSH_HOST}}
+          username: ${{secrets.DROPLET_SSH_USER}}
+          key: ${{secrets.DROPLET_SSH_PRIVATE_KEY}}
+          script: |
+            cd ./prod-delta-storage/delta-storage-aws-s3
+            # Stop and remove existing containers using port 1338
+            container_ids=$(docker ps -q --filter "publish=1338")
+            if [ -n "$container_ids" ]; then
+              docker stop $container_ids
+              docker rm $container_ids
+            fi
+            docker build -t delta-storage-aws-s3 .
+            docker run -d -p 1338:1338 delta-storage-aws-s3
