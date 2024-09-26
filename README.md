@@ -30,7 +30,7 @@ aws s3 --endpoint=http://142.93.144.8:1338 cp <your-file-path> s3://<bucket-id>/
 
 ### Delete a file
 ```bash
-aws s3 --endpoint=http://142.93.144.8:1338 rm s3://bucket-name/your-large-file.mp4
+aws s3 --endpoint=http://142.93.144.8:1338 rm s3://<bucket-id>/<file-id>
 ```
 
 ### List files in a drive
