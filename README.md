@@ -15,17 +15,17 @@ AWS Secret Access Key: <Delta Storage Api Key>
 
 ### Create a drive
 ```bash
-aws s3 --endpoint=http://142.93.144.8:1338 mb s3://bucket-name
+aws s3 --endpoint=http://142.93.144.8:1338 mb s3://<bucket-name>
 ```
 
 ### Delete a drive
 ```bash
-aws s3 --endpoint=http://142.93.144.8:1338 rb s3://bucket-name
+aws s3 --endpoint=http://142.93.144.8:1338 rb s3://<bucket-id>
 ```
 
 ### Upload a file
 ```bash
-aws s3 --endpoint=http://142.93.144.8:1338 cp your-large-file.mp4 s3://bucket-name/your-large-file.mp4
+aws s3 --endpoint=http://142.93.144.8:1338 cp <your-file-path> s3://<bucket-id>/<file-name>
 ```
 
 ### Delete a file
@@ -35,7 +35,7 @@ aws s3 --endpoint=http://142.93.144.8:1338 rm s3://bucket-name/your-large-file.m
 
 ### List files in a drive
 ```bash
-aws s3 --endpoint=http://142.93.144.8:1338 ls s3://bucket-name
+aws s3 --endpoint=http://142.93.144.8:1338 ls s3://<bucket-id>
 ```
 
 ---
